@@ -54,7 +54,7 @@ void modificarPersona(Persona *p)
 
     printf("Modificando persona (ID %d):\n", p->id);
 
-    char buffer[100];
+    char buffer[TAM_BUFFER];
 
     // Nombre
     while (1)

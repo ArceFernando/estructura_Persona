@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
+#include <locale.h>
 #include "validacion.h"
 
-// Leer cadena de forma segura, evitando desbordamientos y limpiando stdin si es necesario
+// Leer una cadena de forma segura desde stdin
 void leerCadena(char *cadena, int max)
 {
     if (fgets(cadena, max, stdin) != NULL)
@@ -12,11 +14,11 @@ void leerCadena(char *cadena, int max)
         size_t len = strlen(cadena);
         if (len > 0 && cadena[len - 1] == '\n')
         {
-            cadena[len - 1] = '\0'; // eliminar salto de linea
+            cadena[len - 1] = '\0'; // Eliminar salto de línea
         }
         else
         {
-            // Limpiar stdin si la entrada fue mas larga que el buffer
+            // Limpiar stdin si la entrada fue más larga que el buffer
             int ch;
             while ((ch = getchar()) != '\n' && ch != EOF)
                 ;
@@ -24,12 +26,11 @@ void leerCadena(char *cadena, int max)
     }
     else
     {
-        // Si fgets falla, aseguramos una cadena vacia
-        cadena[0] = '\0';
+        cadena[0] = '\0'; // Asegurar cadena vacía si falla
     }
 }
 
-// Verifica si una cadena representa un numero entero valido
+// Verifica si una cadena representa un número entero válido
 int esNumeroEntero(const char *cadena)
 {
     if (*cadena == '\0')
@@ -53,6 +54,7 @@ int esNumeroEntero(const char *cadena)
 // Verifica si una cadena contiene solo letras y espacios
 int esCadenaSoloLetras(const char *cadena)
 {
+    setlocale(LC_ALL, ""); // Permite validación multilingüe
     while (*cadena)
     {
         if (!isalpha((unsigned char)*cadena) && !isspace((unsigned char)*cadena))
@@ -62,10 +64,10 @@ int esCadenaSoloLetras(const char *cadena)
     return 1;
 }
 
-// Leer un número entero desde consola, con validación
+// Leer un número entero desde consola con validación
 int leerEntero(const char *mensaje)
 {
-    char buffer[100];
+    char buffer[TAM_BUFFER];
     long valor;
     char *endptr;
 
@@ -74,16 +76,20 @@ int leerEntero(const char *mensaje)
         printf("%s", mensaje);
         leerCadena(buffer, sizeof(buffer));
 
-        valor = strtol(buffer, &endptr, 10);
+        if (!esNumeroEntero(buffer))
+        {
+            printf("Entrada invalida. Ingrese el numero entero.\n");
+            continue;
+        }
 
-        if (endptr == buffer || *endptr != '\0')
+        valor = strtol(buffer, &endptr, 10);
+        if (valor < INT_MIN || valor > INT_MAX)
         {
-            printf("Entrada invalida. Ingrese un numero entero.\n");
+            printf("Numero fuera de rango permitido para un entero.\n");
+            continue;
         }
-        else
-        {
-            return (int)valor;
-        }
+
+        return (int)valor;
     }
 }
 
