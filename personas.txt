@@ -1,0 +1,31 @@
+ID: 1
+Fernando
+Arce
+45
+Ingenieria en Computacion
+Materias: 2
+Algebra
+Analisis Matematico
+---
+ID: 11600065
+Natalia
+Desch
+36
+Medicina
+Materias: 5
+IPC
+ICSE
+Anatomia
+Quimica
+Fisica
+---
+ID: 11600066
+Benicio
+Desch
+10
+Polimodal
+Materias: 3
+Musica
+Gimnasia
+Plastica
+---

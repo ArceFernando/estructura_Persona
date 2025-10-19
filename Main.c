@@ -3,12 +3,16 @@
 #include "persona.h"
 #include "validacion.h"
 #include "archivo.h"
+#include "lista.h"
 
 #define MAX_PERSONAS 5
 
 int main()
 {
     Persona *personas[MAX_PERSONAS] = {0};
+    Nodo *lista = NULL;
+    crearLista(&lista);
+
     int opcion;
 
     printf("Nota: Solo se permiten letras y espacios en los campos de texto.\n");
@@ -23,7 +27,8 @@ int main()
         printf("5. Cargar desde archivo\n");
         printf("6. Modificar persona\n");
         printf("7. Borrar persona\n");
-        printf("8. Salir\n");
+        printf("8. Mostrar lista\n");
+        printf("9. Salir\n");
 
         opcion = leerEntero("Opcion: ");
 
@@ -42,7 +47,10 @@ int main()
             {
                 personas[i] = crearPersona();
                 if (personas[i])
+                {
                     printf("Persona creada con ID %d.\n", personas[i]->id);
+                    insertarEnLista(&lista, personas[i]); // Agregar a lista
+                }
             }
             break;
         }
@@ -76,6 +84,13 @@ int main()
                 }
             }
             cargarDesdeArchivo(personas, MAX_PERSONAS);
+            // Opción: también cargar en la lista
+            liberarLista(&lista);
+            for (int i = 0; i < MAX_PERSONAS; i++)
+            {
+                if (personas[i])
+                    insertarEnLista(&lista, personas[i]);
+            }
             break;
 
         case 6:
@@ -98,11 +113,16 @@ int main()
                 free(personas[pos - 1]);
                 personas[pos - 1] = NULL;
                 printf("Persona borrada.\n");
+                // Nota: no se elimina de la lista en este código
             }
             break;
         }
 
         case 8:
+            mostrarLista(lista);
+            break;
+
+        case 9:
             printf("Saliendo...\n");
             for (int i = 0; i < MAX_PERSONAS; i++)
             {
@@ -112,13 +132,14 @@ int main()
                     personas[i] = NULL;
                 }
             }
+            liberarLista(&lista);
             break;
 
         default:
             printf("Opcion no valida.\n");
         }
 
-    } while (opcion != 8);
+    } while (opcion != 9);
 
     return 0;
 }
