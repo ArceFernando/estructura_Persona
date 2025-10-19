@@ -110,10 +110,10 @@ int main()
                 printf("Posicion invalida o vacia.\n");
             else
             {
+                int id = personas[pos - 1]->id;
                 free(personas[pos - 1]);
                 personas[pos - 1] = NULL;
-                printf("Persona borrada.\n");
-                // Nota: no se elimina de la lista en este código
+                eliminarDeListaPorID(&lista, id);
             }
             break;
         }

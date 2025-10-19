@@ -19,13 +19,3 @@ Anatomia
 Quimica
 Fisica
 ---
-ID: 11600066
-Benicio
-Desch
-10
-Polimodal
-Materias: 3
-Musica
-Gimnasia
-Plastica
----

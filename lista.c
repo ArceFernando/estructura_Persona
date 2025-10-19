@@ -56,3 +56,30 @@ void liberarLista(Nodo **cabeza)
     *cabeza = NULL;
     printf("Lista liberada.\n");
 }
+
+void eliminarDeListaPorID(Nodo **cabeza, int id)
+{
+    Nodo *actual = *cabeza;
+
+    while (actual != NULL)
+    {
+        if (actual->persona->id == id)
+        {
+            // Desconectar el nodo
+            if (actual->anterior)
+                actual->anterior->siguiente = actual->siguiente;
+            else
+                *cabeza = actual->siguiente; // era el primero
+
+            if (actual->siguiente)
+                actual->siguiente->anterior = actual->anterior;
+
+            free(actual); // no se libera actual->persona
+            printf("Persona con ID %d eliminada de la lista.\n", id);
+            return;
+        }
+        actual = actual->siguiente;
+    }
+
+    printf("Persona con ID %d no encontrada en la lista.\n", id);
+}
